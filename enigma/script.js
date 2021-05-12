@@ -1,42 +1,25 @@
 var output = document.getElementById("result");
 var textInput = document.getElementById("textbox")
-var encripted_letter;
 var abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
-var plugboard = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
+var plugboard = [...abc];
+var encripted_letter;
+
 class Rotor {
     constructor(wiring, name, notch) {
         this.name = name;
         this.wiring = wiring.split('');
-        this.abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
+        this.abc = [...abc];
         this.notchs = notch.split("-");
         this.notch = this.notchs[0];
         this.notchNext = this.notchs[1];
     }
-
     rotate() {
         this.wiring.push(this.wiring.shift());
         this.abc.push(this.abc.shift());
     }
-
-    /*El ring setting lo que hace es cambiar la letra que se tenia en el wiring, n cantidad de veces
-    subiendo por el abecedarion
-    ejemplo
-    En el rotor 1 tenemos que
-    abcdefghijklmnopqrstuvwxyz
-    ekmflgdqvzntowyhxuspaibrcj
-
-    Si le ponemos un ringsetting de 2, es decir un ring setting de B
-    Se me van a cambiar todas las letras a mas 1 en el abecedario
-
-    abcdefghijklmnopqrstuvwxyz
-    flngmherwaoupxziyvtqbjcsdk
-
-    Aqui e cambio a f porque porque la letra que le sigue en el abecedario es esa
-    abcd E -> F ghijk...
-    */
     ringSettings(ring) {
         for (let i = 0; i < 26; i++) {
-            let index = abc.indexOf(this.wiring[i]); //Obtengo la posicion d ela letra en el abc
+            let index = abc.indexOf(this.wiring[i]); //Obtengo la posicion de la letra en el abc
             for (let a = 1; a < ring; a++) { //Esa letra la tengo que "subir" n posiciones en el abc
                 if (index < 25) { //Tengo que asegurarme que sea menor a 25 pues si llega a un index de 26 eso no existe en el array
                     index++;
@@ -45,7 +28,7 @@ class Rotor {
                     index = 0; //Lo dejo en cero y de igual forma se seguiran sumando las posiciones que falten...
                 }
             }
-            this.wiring[i] = abc[index]; //El nuevo setting sera la letra en el abc a n letras de la mia
+            this.wiring[i] = abc[index]; //El nuevo setting sera la letra en el abc a n letras de como era originalmente
         }
         for (let e = 1; e < ring; e++) {
             let last = this.wiring.pop();
@@ -83,26 +66,30 @@ function makePlugboard(changesArray) {
     }
 }
 
-//Settings:
+//MODIFICAR SETTINGS
+
+//rotores
 var rotorSlow = rotorI;
 var rotorMedium = rotorII;
 var rotorFast = rotorIII;
 var reflector = reflectorB;
 
+//ring settings
 rotorFast.ringSettings(4); //D - 4
-rotorMedium.ringSettings(abc.indexOf("G")+1); // El ring podia estar representado por una letra o un número
-rotorSlow.ringSettings(abc.indexOf("M")+1);
+rotorMedium.ringSettings(abc.indexOf("G") + 1); // El ring podia estar representado por una letra o un número
+rotorSlow.ringSettings(abc.indexOf("M") + 1);
 
-
+//Posicion inicial
 rotorFast.setInitialKey("K");
-let plugs = ["TF"]
+
+//Crear plugboard
+let plugs = ["TF", "CK"]
 makePlugboard(plugs);
 
 /*Recordemos el orden de la maquina
     reflector - rotor1 - rotor2 - rotor3 <---- Letra
 */
-
-function enter(){
+function enter() {
     let message = textInput.value.split('');
     for (let index = 0; index < message.length; index++) {
         encrypt(message[index].toUpperCase());
@@ -115,17 +102,17 @@ function lettersValidate(event) {
     }
     else {
         return false;
-    } 
+    }
 }
 
 //Contador para separar las letras en pedazos de a 5
 var contador = 0;
 textInput.addEventListener("keydown", function (event) {
-    if(event.keyCode == 13){
+    if (event.keyCode == 13) {
         enter();
     }
     if (event.ctrlKey === false) { //Para que al hacer ctrl+v o ctrl+c no se encripten las letras v o c
-    encrypt(event.key.toUpperCase());
+        encrypt(event.key.toUpperCase());
     }
 
 });
@@ -160,11 +147,6 @@ function round2(rotor, letter) {
 }
 
 //El reflector solo convierte la letra de acuerdo a su posicion en el abc a posicion en el reflector
-/* Ejemplo con reflector B:
-A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
-| | | | | | | | | | | | | | | | | | | | | | | | | | 
-Y R U H Q S L D P X N G O K M I E B F Z C W V J A T
-*/
 function reflection(reflector, letter) {
     let index = abc.indexOf(letter);
     return reflector.wiring[index];
@@ -184,10 +166,7 @@ function encrypt(letter) {
             if (rotorMedium.abc[0] == rotorMedium.notch) { //Si el rotor esta en la posicion del notch es hora de rotar el siguiente rotor
                 console.log("slow rotation ");
                 rotorSlow.rotate();
-                rotorMedium.rotate();   //Aqui es importante hacer la doble rotación (double stepping)
-                // En el enigma como los rotores estaban conectados entre si. Si rotor del final gira, el rotor de en medio también tendrá que girar
-                //Esto tambien pasa en el primer rotor o el rotor rápido, cuando el rotor del medio gira, este debería girar también
-                //pero como es el rotor rapido, y de igual forma va a girar en la siguiente presión de tecla, es innecesario hacerlo girar. Y no afecta el resultado
+                rotorMedium.rotate();   //Doble rotación (double stepping) En el enigma como los rotores estaban  conectados entre si. Si rotor del final gira, el rotor de en medio también tendrá que girar. Esto no se percibe en el rotor rapido porque este gira cada vez.
             }
         }
 
