@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enigma</title>
+    <style>
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <h1>Enigma Machine</h1>
+    <p>Este es un emulador muy básico de una máquina enigma.
+        <br>Para una explicación más completa y una interfáz más bonita visita <a href="https://wildpotrocode.com/Blog/enigma/enigma.html">Mi emulador</a>
+    </p>
+    <input type="text" id="textbox" name="secret" style="text-transform:uppercase" onkeypress="return lettersValidate(event)">
+    <button id="enterButton" onclick="enter()">Go</button>
+
+    <p id="result"></p>
+    <script src="script.js"></script>
+
+    <footer>
+        <p>Made by Paula Uzcátegui with 💜</p>
+    </footer>
+</body>
+</html>
