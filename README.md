@@ -5,10 +5,10 @@ El ejercito Alemán usaba esta máquina para escribir sus **mensajes secretos** 
 
 Debido a la necesidad de decifrar estos mensajes fue que se construyo la primera **computadora!** 💻
 
-Asi que decidí sumergirme un poco en la historia de la **computación** y la **criptografía** e hice este emulador bien **básico **en javascript.
+Asi que decidí sumergirme un poco en la historia de la **computación** y la **criptografía** e hice este emulador bien **básico** en javascript.
 Digo básico porque tiene una interfáz visual muy limitada. No quería sobrecargar el código y dejar a lado la explicación. 
 
-El código está bastante** comentado**. Incluí ejemplos y pequeñas explicaciones de como funciona un Enigma.
+El código está bastante **comentado**. Incluí ejemplos y pequeñas explicaciones de como funciona un Enigma.
 
 #### 💜 Para ver la **versión completa de mi máquina enigma** dirígete a [Wild Potro Code](https://wildpotrocode.com/Blog/enigma/enigma.html). Ahí hice un enigma muy **rosado** 🌷 y mucho más **completo**.
 
